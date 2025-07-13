@@ -1,16 +1,16 @@
-name: Build and Deploy to Kubernetes
+name: Build and Deploy Angular App to Kubernetes
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  build-and-deploy:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
+    - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Set up Node.js
@@ -31,13 +31,14 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest
 
-    - name: Set up kubectl
+    - name: Set up kubeconfig
       run: |
         echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > kubeconfig
         export KUBECONFIG=$PWD/kubeconfig
-        kubectl config use-context minikube
+        kubectl get nodes
 
     - name: Deploy to Kubernetes
       run: |
+        export KUBECONFIG=$PWD/kubeconfig
         kubectl set image deployment/kubernetes-testing kubernetes-testing=${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest
         kubectl rollout status deployment/kubernetes-testing
