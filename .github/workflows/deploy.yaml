@@ -3,7 +3,7 @@ name: Build and Deploy Angular App to Kubernetes
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-deploy:
