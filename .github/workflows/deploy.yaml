@@ -28,8 +28,8 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/kunbernetes-testing:latest .
-        docker push ${{ secrets.DOCKER_USERNAME }}/kunbernetes-testing:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest
 
     - name: Set up kubectl
       run: |
@@ -39,5 +39,5 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl set image deployment/kunbernetes-testing kunbernetes-testing=${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest
-        kubectl rollout status deployment/kunbernetes-testing
+        kubectl set image deployment/kubernetes-testing kubernetes-testing=${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest
+        kubectl rollout status deployment/kubernetes-testing
