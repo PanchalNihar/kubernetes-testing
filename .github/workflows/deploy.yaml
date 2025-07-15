@@ -30,15 +30,3 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest
-
-    - name: Set up kubeconfig
-      run: |
-        echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > kubeconfig
-        export KUBECONFIG=$PWD/kubeconfig
-        kubectl get nodes
-
-    - name: Deploy to Kubernetes
-      run: |
-        export KUBECONFIG=$PWD/kubeconfig
-        kubectl set image deployment/kubernetes-testing kubernetes-testing=${{ secrets.DOCKER_USERNAME }}/kubernetes-testing:latest
-        kubectl rollout status deployment/kubernetes-testing
