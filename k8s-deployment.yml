@@ -19,7 +19,7 @@ spec:
       containers:
         - name: angular-app
           # Run this image
-          image: niharpanchal/kubernetes-testing:latest
+          image: niharpanchal/kubernetes-testing:05
           volumeMounts:
             - mountPath: /usr/share/nginx/html
               name: angular-storage
