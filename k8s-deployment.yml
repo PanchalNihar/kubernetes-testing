@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Unique key of the Deployment instance
+  name: k8s-testing
+spec:
+  # 3 Pods should exist at all times.
+  replicas: 2
+  selector:
+    matchLabels:
+      app: angular-app
+  template:
+    metadata:
+      labels:
+        # Apply this label to pods and default
+        # the Deployment label selector to this value
+        app: angular-app
+    spec:
+      containers:
+        - name: angular-app
+          # Run this image
+          image: niharpanchal/kubernetes-testing:latest
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: angular-storage
+      volumes:
+        - name: angular-storage
+          persistentVolumeClaim:
+            claimName: angular-pvc
